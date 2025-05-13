@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="原件入库"
+    title="原件出库"
     :maskClosable="false"
     placement="right"
     :closable="false"
@@ -84,7 +84,7 @@
             </template>
           </a-table>
           <a-button @click="dataAdd" type="primary" ghost size="large" style="margin-top: 10px;width: 100%">
-            新增物品
+            新增原件
           </a-button>
         </a-col>
       </a-row>
@@ -124,7 +124,7 @@ export default {
     },
     columns () {
       return [{
-        title: '物品名称',
+        title: '原件名称',
         dataIndex: 'name',
         scopedSlots: {customRender: 'nameShow'}
       }, {
