@@ -11,6 +11,9 @@
         oi.total_price AS totalPrice ,
         oi.handler_code AS handlerCode,
         oi.create_time AS createTime,
+        oi.supplier_id,
+        oi.status,
+        oi.material_rate,
         si.staff_name AS handlerName,
         si.avatar AS handlerAvatar
         FROM order_raw_info oi
@@ -49,7 +52,10 @@
         oi.code ,
         oi.total_price AS totalPrice ,
         oi.handler_code AS handlerCode,
-        oi.create_time AS createTime
+        oi.create_time AS createTime,
+        oi.supplier_id,
+        oi.status,
+        oi.material_rate
         FROM order_raw_info oi
         WHERE 1 = 1
         <if test="month != null and month != ''">

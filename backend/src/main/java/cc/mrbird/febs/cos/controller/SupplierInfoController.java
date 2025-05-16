@@ -1,7 +1,9 @@
 package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.OrderRawInfo;
 import cc.mrbird.febs.cos.entity.SupplierInfo;
+import cc.mrbird.febs.cos.service.IOrderRawInfoService;
 import cc.mrbird.febs.cos.service.ISupplierInfoService;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -10,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -23,6 +27,8 @@ public class SupplierInfoController {
 
     private final ISupplierInfoService supplierInfoService;
 
+    private final IOrderRawInfoService orderRawInfoService;
+
     /**
      * 分页查询供应商信息
      *
@@ -33,6 +39,28 @@ public class SupplierInfoController {
     @GetMapping("/page")
     public R page(Page<SupplierInfo> page, SupplierInfo supplierInfo) {
         return R.ok(supplierInfoService.selectSupplierPage(page, supplierInfo));
+    }
+
+    /**
+     * 查询供应商详情
+     *
+     * @param id 供应商ID
+     * @return 结果
+     */
+    @GetMapping("/querySupplierDetail/{id}")
+    public R querySupplierDetail(@PathVariable("id") Integer id) {
+        // 返回结果
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
+            {
+                put("supplier", null);
+                put("order", Collections.emptyList());
+            }
+        };
+
+        SupplierInfo supplierInfo = supplierInfoService.getOne(Wrappers.<SupplierInfo>lambdaQuery().eq(SupplierInfo::getUserId, id));
+        result.put("supplier", supplierInfo);
+        result.put("order", orderRawInfoService.list(Wrappers.<OrderRawInfo>lambdaQuery().eq(OrderRawInfo::getSupplierId, supplierInfo.getId())));
+        return R.ok(result);
     }
 
     /**
