@@ -124,10 +124,23 @@ export default {
     columns () {
       return [{
         title: '供应商名称',
-        dataIndex: 'supplierName'
+        dataIndex: 'supplierName',
+        ellipsis: true
+      }, {
+        title: '供应商编号',
+        dataIndex: 'code',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
       }, {
         title: '创建时间',
-        dataIndex: 'createDate'
+        dataIndex: 'createDate',
+        ellipsis: true
       }, {
         title: '联系人',
         dataIndex: 'contact',
@@ -137,7 +150,8 @@ export default {
           } else {
             return '- -'
           }
-        }
+        },
+        ellipsis: true
       }, {
         title: '联系方式',
         dataIndex: 'phone',
@@ -147,7 +161,8 @@ export default {
           } else {
             return '- -'
           }
-        }
+        },
+        ellipsis: true
       }, {
         title: '可供采购类型',
         dataIndex: 'purchaseType',
@@ -180,6 +195,7 @@ export default {
       }, {
         title: '备注',
         dataIndex: 'remark',
+        ellipsis: true,
         scopedSlots: { customRender: 'contentShow' }
       }, {
         title: '操作',

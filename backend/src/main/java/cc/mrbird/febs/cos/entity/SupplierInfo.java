@@ -27,6 +27,11 @@ public class SupplierInfo implements Serializable {
     private Integer id;
 
     /**
+     * code
+     */
+    private String code;
+
+    /**
      * 供应商名称
      */
     private String supplierName;

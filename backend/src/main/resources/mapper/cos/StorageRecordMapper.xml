@@ -11,12 +11,15 @@
         sr.custodian_code AS custodianCode,
         sr.total_price AS totalPrice,
         sr.create_date AS createDate,
+        sr.status AS status,
+        sr.material_rate AS materialRate,
         sr.remark,
         si1.staff_name AS handlerName,
         si2.staff_name AS custodianName,
         si1.avatar AS handlerAvatar,
         si2.avatar AS custodianAvatar,
-        si.supplier_name AS supplierName
+        si.supplier_name AS supplierName,
+        si.images AS supplierImages
         FROM storage_record sr
         LEFT JOIN staff_info si1 on sr.handler_code = si1.staff_code
         LEFT JOIN staff_info si2 on sr.custodian_code = si2.staff_code
@@ -33,6 +36,9 @@
         </if>
         <if test="storageRecord.supplierName != null and storageRecord.supplierName != ''">
             and si.supplier_name LIKE CONCAT('%',#{storageRecord.supplierName},'%')
+        </if>
+        <if test="storageRecord.supplierId != null and storageRecord.supplierId != ''">
+            and si.user_id = #{storageRecord.supplierId}
         </if>
         ORDER BY sr.create_date DESC
     </select>

@@ -7,18 +7,18 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="供货单号"
+                label="原件名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.code"/>
+                <a-input v-model="queryParams.materialName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="保管人"
+                label="型号"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.custodianName"/>
+                <a-input v-model="queryParams.model"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" @click="add">采购供货</a-button>
+        <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -54,7 +54,8 @@
                @change="handleTableChange">
         <template slot="titleShow" slot-scope="text, record">
           <template>
-            <a-badge status="processing"/>
+            <a-badge status="processing" v-if="record.rackUp === 1"/>
+            <a-badge status="error" v-if="record.rackUp === 0"/>
             <a-tooltip>
               <template slot="title">
                 {{ record.title }}
@@ -67,56 +68,51 @@
           <template>
             <a-tooltip>
               <template slot="title">
-                {{ record.remark }}
+                {{ record.content }}
               </template>
-              {{ record.remark.slice(0, 30) }} ...
+              {{ record.content.slice(0, 25) }} ...
             </a-tooltip>
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="folder-open" @click="view(record)" title="查 看" style="margin-right: 15px"></a-icon>
-          <a-icon type="download" @click="downLoad(record)" title="下 载"></a-icon>
+          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
         </template>
       </a-table>
-      <request-add
-        v-if="requestAdd.visiable"
-        @close="handleRequestAddClose"
-        @success="handleRequestAddSuccess"
-        :requestAddVisiable="requestAdd.visiable">
-      </request-add>
-      <record-view
-        @close="handlerecordViewClose"
-        :recordShow="recordView.visiable"
-        :recordData="recordView.data">
-      </record-view>
     </div>
+    <bulletin-add
+      v-if="bulletinAdd.visiable"
+      @close="handleBulletinAddClose"
+      @success="handleBulletinAddSuccess"
+      :bulletinAddVisiable="bulletinAdd.visiable">
+    </bulletin-add>
+    <bulletin-edit
+      ref="bulletinEdit"
+      @close="handleBulletinEditClose"
+      @success="handleBulletinEditSuccess"
+      :bulletinEditVisiable="bulletinEdit.visiable">
+    </bulletin-edit>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
-import RecordView from './RecordView'
+import BulletinAdd from './ProductAdd.vue'
+import BulletinEdit from './ProductEdit.vue'
 import {mapState} from 'vuex'
-import { newSpread, floatForm, floatReset, saveExcel } from '@/utils/spreadJS'
 import moment from 'moment'
-import RequestAdd from './RequestAdd'
 moment.locale('zh-cn')
 
 export default {
-  name: 'request',
-  components: {RequestAdd, RecordView, RangeDate},
+  name: 'Bulletin',
+  components: {BulletinAdd, BulletinEdit, RangeDate},
   data () {
     return {
       advanced: false,
-      requestAdd: {
+      bulletinAdd: {
         visiable: false
       },
-      requestEdit: {
+      bulletinEdit: {
         visiable: false
-      },
-      recordView: {
-        visiable: false,
-        data: null
       },
       queryParams: {},
       filteredInfo: null,
@@ -142,38 +138,61 @@ export default {
     }),
     columns () {
       return [{
-        title: '供货单号',
-        dataIndex: 'code',
+        title: '原件名称',
+        dataIndex: 'materialName',
         ellipsis: true
       }, {
-        title: '总价',
-        dataIndex: 'totalPrice',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return '￥' + text.toFixed(2)
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '采购状态',
-        dataIndex: 'status',
+        title: '原件类型',
+        dataIndex: 'materialType',
         customRender: (text, row, index) => {
           switch (text) {
-            case '0':
-              return <a-tag>待质检</a-tag>
-            case '1':
-              return <a-tag>待审批</a-tag>
-            case '2':
-              return <a-tag>已供货</a-tag>
-            case '3':
-              return <a-tag>退货</a-tag>
+            case 1:
+              return <a-tag>电容</a-tag>
+            case 2:
+              return <a-tag>微控制器</a-tag>
+            case 3:
+              return <a-tag>滤波器</a-tag>
+            case 4:
+              return <a-tag>连接器</a-tag>
             default:
               return '- -'
           }
         }
       }, {
-        title: '供应商',
+        title: '原件图片',
+        dataIndex: 'images',
+        customRender: (text, record, index) => {
+          if (!record.images) return <a-avatar shape="square" icon="user" />
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+            </template>
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+          </a-popover>
+        }
+      }, {
+        title: '计量单位',
+        dataIndex: 'measurementUnit',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '型号',
+        dataIndex: 'model',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
+      }, {
+        title: '所属供应商',
         dataIndex: 'supplierName',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -197,27 +216,7 @@ export default {
         },
         ellipsis: true
       }, {
-        title: '保管人',
-        dataIndex: 'custodianName',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '经手人',
-        dataIndex: 'handlerName',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '供货时间',
+        title: '创建时间',
         dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -238,31 +237,6 @@ export default {
     this.fetch()
   },
   methods: {
-    downLoad (row) {
-      this.$message.loading('正在生成', 0)
-      this.$get(`/cos/storage-record/export/${row.code}`).then((r) => {
-        let materialList = r.data.materialMapList
-        let newData = []
-        materialList.forEach((item, index) => {
-          newData.push([(index + 1).toFixed(0), item.materialName, item.measurementUnit !== null ? item.measurementUnit : '- -', item.quantity, item.unitPrice])
-        })
-        let spread = newSpread('inTable')
-        let sheet = spread.getActiveSheet()
-        sheet.suspendPaint()
-        sheet.setValue(2, 12, row.code)
-        spread = floatForm(spread, 'inTable', newData)
-        saveExcel(spread, '供货单.xlsx')
-        floatReset(spread, 'inTable', newData.length)
-        this.$message.destroy()
-      })
-    },
-    view (row) {
-      this.recordView.data = row
-      this.recordView.visiable = true
-    },
-    handlerecordViewClose () {
-      this.recordView.visiable = false
-    },
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
@@ -270,14 +244,26 @@ export default {
       this.advanced = !this.advanced
     },
     add () {
-      this.requestAdd.visiable = true
+      this.bulletinAdd.visiable = true
     },
-    handleRequestAddClose () {
-      this.requestAdd.visiable = false
+    handleBulletinAddClose () {
+      this.bulletinAdd.visiable = false
     },
-    handleRequestAddSuccess () {
-      this.requestAdd.visiable = false
-      this.$message.success('供货成功')
+    handleBulletinAddSuccess () {
+      this.bulletinAdd.visiable = false
+      this.$message.success('新增原件成功')
+      this.search()
+    },
+    edit (record) {
+      this.$refs.bulletinEdit.setFormValues(record)
+      this.bulletinEdit.visiable = true
+    },
+    handleBulletinEditClose () {
+      this.bulletinEdit.visiable = false
+    },
+    handleBulletinEditSuccess () {
+      this.bulletinEdit.visiable = false
+      this.$message.success('修改原件成功')
       this.search()
     },
     handleDeptChange (value) {
@@ -295,7 +281,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/storage-record/' + ids).then(() => {
+          that.$delete('/cos/supplier-raw-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -365,7 +351,8 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      this.$get('/cos/storage-record/page', {
+      params.supplierId = this.currentUser.userId
+      this.$get('/cos/supplier-raw-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

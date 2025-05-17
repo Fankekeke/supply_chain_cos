@@ -142,15 +142,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
                 put("bulletin", Collections.emptyList());
             }
         };
+        // 公告信息
+        List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, "1"));
+        result.put("bulletin", bulletinInfoList);
         UserInfo userInfo = this.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userId));
         if (userInfo == null) {
             return result;
         }
         result.put("user", userInfo);
-
-        // 公告信息
-        List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, "1"));
-        result.put("bulletin", bulletinInfoList);
         return result;
     }
 }

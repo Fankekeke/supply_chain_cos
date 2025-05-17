@@ -2,4 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.SupplierRawInfoMapper">
 
+    <!-- 分页查询供应商信息 -->
+    <select id="querySupplierRawPage" resultType="java.util.LinkedHashMap">
+        select
+        sri.id,
+        sri.material_name,
+        sri.material_type,
+        sri.measurement_unit,
+        sri.model,
+        sri.images,
+        sri.supplier_id,
+        sri.create_date,
+        si.supplier_name,
+        si.images AS supplierImages
+        from
+        supplier_raw_info sri
+        left join supplier_info si on
+        (si.id = sri.supplier_id)
+        where
+        1 = 1
+        <if test="supplierRawInfo.supplierName != null and supplierRawInfo.supplierName != ''">
+            and si.supplier_name LIKE CONCAT('%',#{supplierRawInfo.supplierName},'%')
+        </if>
+        <if test="supplierRawInfo.model != null and supplierRawInfo.model != ''">
+            and sri.supplier_name LIKE CONCAT('%',#{supplierRawInfo.model},'%')
+        </if>
+        <if test="supplierRawInfo.materialName != null and supplierRawInfo.materialName != ''">
+            and sri.material_name LIKE CONCAT('%',#{supplierRawInfo.materialName},'%')
+        </if>
+        order by
+        sri.create_date desc
+    </select>
 </mapper>

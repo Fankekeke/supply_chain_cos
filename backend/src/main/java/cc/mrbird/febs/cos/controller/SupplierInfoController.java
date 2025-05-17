@@ -2,9 +2,12 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.OrderRawInfo;
+import cc.mrbird.febs.cos.entity.StorageRecord;
 import cc.mrbird.febs.cos.entity.SupplierInfo;
 import cc.mrbird.febs.cos.service.IOrderRawInfoService;
+import cc.mrbird.febs.cos.service.IStorageRecordService;
 import cc.mrbird.febs.cos.service.ISupplierInfoService;
+import cc.mrbird.febs.system.service.UserService;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,6 +31,10 @@ public class SupplierInfoController {
     private final ISupplierInfoService supplierInfoService;
 
     private final IOrderRawInfoService orderRawInfoService;
+
+    private final IStorageRecordService storageRecordService;
+
+    private final UserService userService;
 
     /**
      * 分页查询供应商信息
@@ -59,7 +66,7 @@ public class SupplierInfoController {
 
         SupplierInfo supplierInfo = supplierInfoService.getOne(Wrappers.<SupplierInfo>lambdaQuery().eq(SupplierInfo::getUserId, id));
         result.put("supplier", supplierInfo);
-        result.put("order", orderRawInfoService.list(Wrappers.<OrderRawInfo>lambdaQuery().eq(OrderRawInfo::getSupplierId, supplierInfo.getId())));
+        result.put("order", storageRecordService.list(Wrappers.<StorageRecord>lambdaQuery().eq(StorageRecord::getSupplierId, supplierInfo.getId())));
         return R.ok(result);
     }
 
@@ -74,15 +81,17 @@ public class SupplierInfoController {
     }
 
     /**
-     * 添加供应商信息
+//     * 添加供应商信息
      *
      * @param supplierInfo 供应商信息
      * @return 结果
      */
     @PostMapping
-    public R add(SupplierInfo supplierInfo) {
+    public R add(SupplierInfo supplierInfo) throws Exception {
+        supplierInfo.setCode("SUP-" + System.currentTimeMillis());
         supplierInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
-        return R.ok(supplierInfoService.save(supplierInfo));
+        userService.registSupplier(supplierInfo.getCode(), "1234qwer", supplierInfo);
+        return R.ok(true);
     }
 
     /**

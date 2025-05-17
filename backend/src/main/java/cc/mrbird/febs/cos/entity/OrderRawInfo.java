@@ -54,21 +54,6 @@ public class OrderRawInfo implements Serializable {
     private String remark;
 
     /**
-     * 所属供应商
-     */
-    private Integer supplierId;
-
-    /**
-     * 状态（0.待质检 1.待审批 2.已入库 3.退货）
-     */
-    private String status;
-
-    /**
-     * 质检合格率
-     */
-    private BigDecimal materialRate;
-
-    /**
      * 产品信息
      */
     @TableField(exist = false)
@@ -76,5 +61,8 @@ public class OrderRawInfo implements Serializable {
 
     @TableField(exist = false)
     private String handlerName;
+
+    @TableField(exist = false)
+    private Integer supplierId;
 
 }

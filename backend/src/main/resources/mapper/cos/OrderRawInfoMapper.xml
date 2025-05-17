@@ -11,9 +11,6 @@
         oi.total_price AS totalPrice ,
         oi.handler_code AS handlerCode,
         oi.create_time AS createTime,
-        oi.supplier_id,
-        oi.status,
-        oi.material_rate,
         si.staff_name AS handlerName,
         si.avatar AS handlerAvatar
         FROM order_raw_info oi
@@ -24,6 +21,9 @@
         </if>
         <if test="orderInfo.code != null and orderInfo.code != ''">
             and oi.code LIKE CONCAT('%',#{orderInfo.code},'%')
+        </if>
+        <if test="orderInfo.supplierId != null and orderInfo.supplierId != ''">
+            and si.user_id = #{orderInfo.supplierId}
         </if>
     </select>
 
@@ -52,10 +52,7 @@
         oi.code ,
         oi.total_price AS totalPrice ,
         oi.handler_code AS handlerCode,
-        oi.create_time AS createTime,
-        oi.supplier_id,
-        oi.status,
-        oi.material_rate
+        oi.create_time AS createTime
         FROM order_raw_info oi
         WHERE 1 = 1
         <if test="month != null and month != ''">

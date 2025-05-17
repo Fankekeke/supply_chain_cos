@@ -2,4 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.ReplyPriceInfoMapper">
 
+    <!-- 分页查询询价信息 -->
+    <select id="queryReplyPricePage" resultType="java.util.LinkedHashMap">
+        select
+        rpi.id,
+        rpi.supplier_id,
+        rpi.content,
+        rpi.reply_content,
+        rpi.status,
+        rpi.create_date,
+        si.supplier_name,
+        si.images
+        from
+        reply_price_info rpi
+        left join supplier_info si on
+        (si.id = rpi.supplier_id)
+        where
+        1 = 1
+        <if test="replyPriceInfo.supplierName != null and replyPriceInfo.supplierName != ''">
+            and si.supplier_name LIKE CONCAT('%',#{replyPriceInfo.supplierName},'%')
+        </if>
+        <if test="replyPriceInfo.supplierId != null and replyPriceInfo.supplierId != ''">
+            and si.user_id = #{replyPriceInfo.supplierId}
+        </if>
+        order by
+        rpi.create_date desc
+    </select>
 </mapper>

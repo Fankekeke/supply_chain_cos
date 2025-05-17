@@ -6,6 +6,7 @@
     <select id="selectSupplierPage" resultType="java.util.LinkedHashMap">
         SELECT
         si.id,
+        si.code,
         si.purchase_type AS purchaseType,
         si.supplier_name AS supplierName,
         si.remark,

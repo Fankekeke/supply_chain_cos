@@ -64,6 +64,16 @@ public class StorageRecord implements Serializable {
     private String remark;
 
     /**
+     * 状态（0.待质检 1.待审批 2.已入库 3.退货）
+     */
+    private String status;
+
+    /**
+     * 质检合格率
+     */
+    private BigDecimal materialRate;
+
+    /**
      * 经手人
      */
     @TableField(exist = false)

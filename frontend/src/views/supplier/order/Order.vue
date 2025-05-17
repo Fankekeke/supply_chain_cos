@@ -39,8 +39,8 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" @click="add">采购供货</a-button>
-        <a-button @click="batchDelete">删除</a-button>
+<!--        <a-button type="primary" ghost @click="add">供货</a-button>-->
+<!--        <a-button @click="batchDelete">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -365,6 +365,7 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
+      params.supplierId = this.currentUser.userId
       this.$get('/cos/storage-record/page', {
         ...params
       }).then((r) => {

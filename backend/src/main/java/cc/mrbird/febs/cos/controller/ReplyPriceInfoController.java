@@ -7,6 +7,7 @@ import cc.mrbird.febs.cos.entity.ReplyPriceInfo;
 import cc.mrbird.febs.cos.service.ISupplierInfoService;
 import cc.mrbird.febs.cos.service.IReplyPriceInfoService;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,7 @@ public class ReplyPriceInfoController {
      */
     @PostMapping
     public R add(ReplyPriceInfo replyPriceInfo) {
+        replyPriceInfo.setStatus("0");
         replyPriceInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(replyPriceInfoService.save(replyPriceInfo));
     }
@@ -60,6 +62,9 @@ public class ReplyPriceInfoController {
      */
     @PutMapping
     public R edit(ReplyPriceInfo replyPriceInfo) {
+        if (StrUtil.isNotEmpty(replyPriceInfo.getReplyContent())) {
+            replyPriceInfo.setStatus("1");
+        }
         return R.ok(replyPriceInfoService.updateById(replyPriceInfo));
     }
 

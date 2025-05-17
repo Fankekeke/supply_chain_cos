@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="供货单号"
+                label="入库单号"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.code"/>
@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" @click="add">采购供货</a-button>
+        <a-button type="primary" ghost @click="add">入库</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -142,9 +142,8 @@ export default {
     }),
     columns () {
       return [{
-        title: '供货单号',
-        dataIndex: 'code',
-        ellipsis: true
+        title: '入库单号',
+        dataIndex: 'code'
       }, {
         title: '总价',
         dataIndex: 'totalPrice',
@@ -156,23 +155,6 @@ export default {
           }
         }
       }, {
-        title: '采购状态',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '0':
-              return <a-tag>待质检</a-tag>
-            case '1':
-              return <a-tag>待审批</a-tag>
-            case '2':
-              return <a-tag>已供货</a-tag>
-            case '3':
-              return <a-tag>退货</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
         title: '供应商',
         dataIndex: 'supplierName',
         customRender: (text, row, index) => {
@@ -181,21 +163,7 @@ export default {
           } else {
             return '- -'
           }
-        },
-        ellipsis: true
-      }, {
-        title: '供应商图片',
-        dataIndex: 'supplierImages',
-        customRender: (text, record, index) => {
-          if (!record.supplierImages) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0] } />
-          </a-popover>
-        },
-        ellipsis: true
+        }
       }, {
         title: '保管人',
         dataIndex: 'custodianName',
@@ -217,7 +185,11 @@ export default {
           }
         }
       }, {
-        title: '供货时间',
+        title: '备注',
+        dataIndex: 'remark',
+        scopedSlots: {customRender: 'contentShow'}
+      }, {
+        title: '入库时间',
         dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -225,8 +197,7 @@ export default {
           } else {
             return '- -'
           }
-        },
-        ellipsis: true
+        }
       }, {
         title: '操作',
         dataIndex: 'operation',
@@ -251,7 +222,7 @@ export default {
         sheet.suspendPaint()
         sheet.setValue(2, 12, row.code)
         spread = floatForm(spread, 'inTable', newData)
-        saveExcel(spread, '供货单.xlsx')
+        saveExcel(spread, '入库单.xlsx')
         floatReset(spread, 'inTable', newData.length)
         this.$message.destroy()
       })
@@ -277,7 +248,7 @@ export default {
     },
     handleRequestAddSuccess () {
       this.requestAdd.visiable = false
-      this.$message.success('供货成功')
+      this.$message.success('入库成功')
       this.search()
     },
     handleDeptChange (value) {
