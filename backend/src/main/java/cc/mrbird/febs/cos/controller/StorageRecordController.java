@@ -34,6 +34,16 @@ public class StorageRecordController {
     }
 
     /**
+     * 供货审核
+     *
+     * @return 结果
+     */
+    @GetMapping("/checkStock")
+    public R checkStock(Integer id, String status) {
+        return R.ok(storageRecordService.checkStock(id, status));
+    }
+
+    /**
      * 入库记录导出
      *
      * @param code 入库单号
@@ -64,7 +74,7 @@ public class StorageRecordController {
      */
     @PostMapping
     public R add(StorageRecord storageRecord) {
-        return R.ok(storageRecordService.saveStorageRecord(storageRecord));
+        return R.ok(storageRecordService.saveStorageRecordStatus(storageRecord));
     }
 
     /**

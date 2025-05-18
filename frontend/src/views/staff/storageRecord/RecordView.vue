@@ -4,11 +4,8 @@
       <a-button key="back" @click="onClose" type="danger">
         关闭
       </a-button>
-      <a-button v-if="recordData.status == 1" key="back1" @click="checkStock(3)" type="danger">
-        退货
-      </a-button>
-      <a-button v-if="recordData.status == 1" key="back2" @click="checkStock(2)" type="primary">
-        入库
+      <a-button key="back1" @click="checkRate" type="primary" v-if="recordData.status == 0 && recordData.materialRate == null">
+        检验
       </a-button>
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="recordData !== null">
@@ -40,6 +37,14 @@
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>供应商：</b>
           {{ recordData.supplierName !== null ? recordData.supplierName : '- -' }}
+        </a-col>
+      </a-row>
+      <br/>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="recordData.status == 0 && recordData.materialRate == null">
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">检验合格率</span></a-col>
+        <a-col :span="6">
+          <a-input-number v-model="materialRate" :min="0" :max="100" style="width: 100%"/>
         </a-col>
       </a-row>
       <br/>
@@ -134,6 +139,7 @@ export default {
   data () {
     return {
       loading: false,
+      materialRate: 0,
       goodsList: []
     }
   },
@@ -145,8 +151,14 @@ export default {
     }
   },
   methods: {
-    checkStock (status) {
-      this.$get(`/cos/storage-record/checkStock`, {id: this.recordData.id, status}).then((r) => {
+    checkRate () {
+      let data = this.recordData
+      data.materialRate = this.materialRate
+      data.status = 1
+      this.$put('/cos/storage-record', {
+        ...data
+      }).then((r) => {
+        this.materialRate = 0
         this.$emit('success')
       })
     },

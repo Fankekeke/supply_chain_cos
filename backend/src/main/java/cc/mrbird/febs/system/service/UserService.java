@@ -1,6 +1,7 @@
 package cc.mrbird.febs.system.service;
 
 import cc.mrbird.febs.common.domain.QueryRequest;
+import cc.mrbird.febs.cos.entity.StaffInfo;
 import cc.mrbird.febs.cos.entity.SupplierInfo;
 import cc.mrbird.febs.system.domain.User;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -102,6 +103,15 @@ public interface UserService extends IService<User> {
      * @param supplierInfo 供应商信息
      */
     void registSupplier(String username, String password, SupplierInfo supplierInfo) throws Exception;
+
+    /**
+     * 注册员工
+     *
+     * @param username  用户名
+     * @param password  密码
+     * @param staffInfo 员工信息
+     */
+    void registStaff(String username, String password, StaffInfo staffInfo) throws Exception;
 
     /**
      * 重置密码

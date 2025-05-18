@@ -82,7 +82,7 @@ public class StaffInfo implements Serializable {
      * 邮箱地址
      */
     private String email;
-
+    private Integer userId;
 
     @TableField(exist = false)
     private BigDecimal salary;

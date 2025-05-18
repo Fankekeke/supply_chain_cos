@@ -96,5 +96,6 @@ public class StorageRecord implements Serializable {
      */
     @TableField(exist = false)
     private String supplierName;
+    private String materialList;
 
 }

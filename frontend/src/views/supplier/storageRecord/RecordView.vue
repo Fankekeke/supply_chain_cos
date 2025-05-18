@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="入库详情" @cancel="onClose" :width="900">
+  <a-modal v-model="show" title="供货详情" @cancel="onClose" :width="900">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
@@ -8,7 +8,7 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="recordData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
-        <a-col :span="8"><b>入库单号：</b>
+        <a-col :span="8"><b>供货单号：</b>
           {{ recordData.code !== null ? recordData.code : '- -' }}
         </a-col>
         <a-col :span="8"><b>价 格：</b>
@@ -20,7 +20,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>入库时间：</b>
+        <a-col :span="8"><b>供货时间：</b>
           {{ recordData.createDate !== null ? recordData.createDate : '- -' }}
         </a-col>
         <a-col :span="8"><b>经手人：</b>

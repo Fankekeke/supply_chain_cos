@@ -23,6 +23,15 @@ public interface IStorageRecordService extends IService<StorageRecord> {
     IPage<LinkedHashMap<String, Object>> selectStorageRecordPage(Page<StorageRecord> page, StorageRecord storageRecord);
 
     /**
+     * 入库审核
+     *
+     * @param id     入库单ID
+     * @param status 状态
+     * @return 结果
+     */
+    boolean checkStock(Integer id, String status);
+
+    /**
      * 入库记录导出
      *
      * @param code 入库单号
@@ -37,7 +46,7 @@ public interface IStorageRecordService extends IService<StorageRecord> {
      * @param code 入库单号
      * @return 结果
      */
-    List<LinkedHashMap<String, Object>> storageRecordDetail(String code);
+    List<LinkedHashMap> storageRecordDetail(String code);
 
     /**
      * 添加入库记录
@@ -46,6 +55,14 @@ public interface IStorageRecordService extends IService<StorageRecord> {
      * @return 结果
      */
     boolean saveStorageRecord(StorageRecord storageRecord);
+
+    /**
+     * 添加入库记录
+     *
+     * @param storageRecord 入库记录
+     * @return 结果
+     */
+    boolean saveStorageRecordStatus(StorageRecord storageRecord);
 
     /**
      * 分页查询入库统计

@@ -4,6 +4,7 @@ package cc.mrbird.febs.cos.controller;
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.StaffInfo;
 import cc.mrbird.febs.cos.service.IStaffInfoService;
+import cc.mrbird.febs.system.service.UserService;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,6 +24,8 @@ import java.util.List;
 public class StaffInfoController {
 
     private final IStaffInfoService staffInfoService;
+
+    private final UserService userService;
 
     /**
      * 分页查询员工信息
@@ -48,18 +51,30 @@ public class StaffInfoController {
     }
 
     /**
+     * 员工信息详情
+     *
+     * @param userId 用户ID
+     * @return 详情
+     */
+    @GetMapping("/selectDetailByUserId/{userId}")
+    public R selectDetailByUserId(@PathVariable String userId) {
+        return R.ok(staffInfoService.getOne(Wrappers.<StaffInfo>lambdaQuery().eq(StaffInfo::getUserId, userId)));
+    }
+
+    /**
      * 添加员工信息
      *
      * @param staffInfo 员工信息
      * @return 结果
      */
     @PostMapping
-    public R add(StaffInfo staffInfo) {
+    public R add(StaffInfo staffInfo) throws Exception {
         // 设置员工编号
         staffInfo.setStaffCode("STAFF-" + System.currentTimeMillis());
         staffInfo.setOnBoardTime(DateUtil.formatDate(new Date()));
         staffInfo.setStaffStatus(1);
-        return R.ok(staffInfoService.save(staffInfo));
+        userService.registStaff(staffInfo.getStaffCode(), "1234qwer", staffInfo);
+        return R.ok(true);
     }
 
     /**

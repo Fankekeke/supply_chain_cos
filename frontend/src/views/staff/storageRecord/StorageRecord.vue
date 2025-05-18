@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" @click="add">采购供货</a-button>
+<!--        <a-button type="primary" @click="add">采购供货</a-button>-->
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -75,8 +75,6 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="folder-open" @click="view(record)" title="查 看" style="margin-right: 15px"></a-icon>
-          <a-icon type="container" theme="twoTone" @click="view(record)" title="审 核" style="margin-right: 15px" v-if="record.status == 1 && record.materialRate"></a-icon>
-          <a-icon type="download" @click="downLoad(record)" title="下 载" v-if="record.status == 2"></a-icon>
         </template>
       </a-table>
       <request-add
@@ -277,7 +275,7 @@ export default {
     },
     handlerecordViewSuccess () {
       this.recordView.visiable = false
-      this.$message.success('审核成功')
+      this.$message.success('检验成功')
       this.search()
     },
     onSelectChange (selectedRowKeys) {

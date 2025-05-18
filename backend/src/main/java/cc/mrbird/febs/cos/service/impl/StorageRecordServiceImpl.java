@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -42,6 +43,60 @@ public class StorageRecordServiceImpl extends ServiceImpl<StorageRecordMapper, S
     @Override
     public IPage<LinkedHashMap<String, Object>> selectStorageRecordPage(Page<StorageRecord> page, StorageRecord storageRecord) {
         return baseMapper.selectStorageRecordPage(page, storageRecord);
+    }
+
+    /**
+     * 入库审核
+     *
+     * @param id     入库单ID
+     * @param status 状态
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean checkStock(Integer id, String status) {
+        StorageRecord storageRecord = this.getById(id);
+        if ("3".equals(status)) {
+            storageRecord.setStatus(status);
+            return this.updateById(storageRecord);
+        } else if ("2".equals(status)) {
+            List<StorehouseInfo> infoList = JSONUtil.toList(storageRecord.getMaterialList(), StorehouseInfo.class);
+            // 获取物料库存
+            List<String> materialNameList = infoList.stream().map(StorehouseInfo::getMaterialName).distinct().collect(Collectors.toList());
+            List<StorehouseInfo> storehouseInfoList = storehouseInfoService.list(Wrappers.<StorehouseInfo>lambdaQuery().in(StorehouseInfo::getMaterialName, materialNameList).eq(StorehouseInfo::getTransactionType, 0));
+            // 库存信息转MAP
+            Map<String, StorehouseInfo> storehouseInfoMap = storehouseInfoList.stream().collect(Collectors.toMap(StorehouseInfo::getMaterialName, e -> e));
+            List<StorehouseInfo> inStockList = new ArrayList<>();
+            List<StorehouseInfo> putStockList = new ArrayList<>();
+            infoList.forEach(material -> {
+                // 入库单号
+                material.setInboundOrderNumber(storageRecord.getCode());
+                StorehouseInfo stockItem = storehouseInfoMap.get(material.getMaterialName());
+                // 库房类型
+                material.setTransactionType(1);
+                material.setCreateDate(DateUtil.formatDateTime(new Date()));
+                if (stockItem != null) {
+                    stockItem.setQuantity(stockItem.getQuantity().add(material.getQuantity()));
+                    stockItem.setCreateDate(DateUtil.formatDateTime(new Date()));
+                    inStockList.add(stockItem);
+                } else {
+                    stockItem = BeanUtil.copyProperties(material, StorehouseInfo.class);
+                    stockItem.setInboundOrderNumber(null);
+                    stockItem.setTransactionType(0);
+                    putStockList.add(stockItem);
+                }
+            });
+            if (CollectionUtil.isNotEmpty(inStockList)) {
+                storehouseInfoService.updateBatchById(inStockList);
+            }
+            if (CollectionUtil.isNotEmpty(putStockList)) {
+                infoList.addAll(putStockList);
+            }
+            storehouseInfoService.saveBatch(infoList);
+            storageRecord.setStatus(status);
+            return this.updateById(storageRecord);
+        }
+        return true;
     }
 
     /**
@@ -78,8 +133,15 @@ public class StorageRecordServiceImpl extends ServiceImpl<StorageRecordMapper, S
      * @return 结果
      */
     @Override
-    public List<LinkedHashMap<String, Object>> storageRecordDetail(String code) {
-        return baseMapper.storageRecordDetail(code);
+    public List<LinkedHashMap> storageRecordDetail(String code) {
+        StorageRecord storageRecord = this.getOne(Wrappers.<StorageRecord>lambdaQuery().eq(StorageRecord::getCode, code));
+        if (storageRecord == null || StrUtil.isEmpty(storageRecord.getMaterialList())) {
+            return Collections.emptyList();
+        }
+
+        List<LinkedHashMap> infoList = JSONUtil.toList(storageRecord.getMaterialList(), LinkedHashMap.class);
+        return infoList;
+//        return baseMapper.storageRecordDetail(code);
     }
 
     /**
@@ -128,6 +190,32 @@ public class StorageRecordServiceImpl extends ServiceImpl<StorageRecordMapper, S
         if (CollectionUtil.isNotEmpty(putStockList)) {
             infoList.addAll(putStockList);
         }
+        storehouseInfoService.saveBatch(infoList);
+        return this.save(storageRecord);
+    }
+
+    /**
+     * 添加入库记录
+     *
+     * @param storageRecord 入库记录
+     * @return 结果
+     */
+    @Override
+    public boolean saveStorageRecordStatus(StorageRecord storageRecord) {
+        // 设置入库单号
+        storageRecord.setCode("IN-"+System.currentTimeMillis());
+        storageRecord.setMaterialList(storageRecord.getMaterial());
+        List<StorehouseInfo> infoList = JSONUtil.toList(storageRecord.getMaterial(), StorehouseInfo.class);
+        // 获取物料库存
+        List<String> materialNameList = infoList.stream().map(StorehouseInfo::getMaterialName).distinct().collect(Collectors.toList());
+        List<StorehouseInfo> storehouseInfoList = storehouseInfoService.list(Wrappers.<StorehouseInfo>lambdaQuery().in(StorehouseInfo::getMaterialName, materialNameList).eq(StorehouseInfo::getTransactionType, 0));
+        // 库存信息转MAP
+        Map<String, StorehouseInfo> storehouseInfoMap = storehouseInfoList.stream().collect(Collectors.toMap(StorehouseInfo::getMaterialName, e -> e));
+        storageRecord.setCreateDate(DateUtil.formatDateTime(new Date()));
+        // 总价格
+        BigDecimal totalPrice = infoList.stream().map(p -> p.getQuantity().multiply(p.getUnitPrice())).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+        storageRecord.setTotalPrice(totalPrice);
+        storageRecord.setStatus("0");
         storehouseInfoService.saveBatch(infoList);
         return this.save(storageRecord);
     }
