@@ -37,6 +37,18 @@ WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
 admin
 1234qwer
 
+[供应商]
+SUP-fank
+1234qwer
+
+[员工]
+STF-fank
+1234qwer
+
+[用户]
+fank
+1234qwer
+
 ###### 管理员：
 收货地址、预警配置、公告管理、商品管理、商品折扣、商品类型、配送物流、订单管理、库房出库、库房入库、库存预警、库房管理、库房记录、用户管理、供应商管理、原料库存、原件采购、出库记录、员工管理、原件出库、原件市场、询价记录、数据统计、订单年月统计。
 
@@ -54,6 +66,20 @@ admin
 
 |  |  |
 |---------------------|---------------------|
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/3af18fcd-3af2-4bc4-8931-1702e79c2ca4.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/b6764672-151f-422c-96f5-025280c23563.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/2fe232a3-e475-4813-b807-e4dbcc7f2ab4.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/b874a547-72b7-452c-bd98-47ebed59ac0d.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/2fc18ebb-003f-4a4b-91dd-0194cb4b3a68.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/ad98b898-5d0e-4f3a-8f4d-828156080f07.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/2a85ccee-2797-4c31-85f8-06a54a6cb03c.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/a980b834-3957-43a2-957e-76451582c079.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/0a24ad8d-daaf-45e2-b518-64107cd219f8.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/48953281-0e26-480a-889b-56ac8efd6b4d.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/fe9dcdd3-02e1-40c1-94b5-67fe5b93b8c0.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/00034149-c41a-45bb-9426-49039dd27854.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/fde68658-fa2c-437c-b067-c6a8df7b587f.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/4430cf5c-5f4b-4a75-b336-7361f3a2a334.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/ed68d0b1-ad55-4275-a055-9f02c75e49cb.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/721aaaee-9ca2-425a-ab5a-a8cb78a3a6b3.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/e1bf026d-621b-4010-939f-77d812585e73.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/0236c0ee-6908-498a-8ecf-989e70173a2f.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/d7912308-0abe-463d-9cbd-1e696402fe82.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/41b6f445-7300-4b6b-b578-7c78cc291659.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/d47ef55d-f9ac-4299-91a2-0f646e28b4a0.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/8a4cd814-b22a-43ca-bc0a-e9a1d5d16cf8.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/c3945fa6-6f5f-40df-8ff2-9a051d796181.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/6d426c74-5f42-40ad-a026-255caba4cc5c.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/c1f96c4e-4a62-4f95-8287-17628056bda3.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/5c1cfcd5-f920-464b-a22a-128bc3a539c8.png) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/c1cea100-1c8d-4073-8ac4-937f8d093e12.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/4de703c6-fffd-46a5-b7ec-00d6353d68ac.png) |
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/work/936e9baf53eb9a217af4f89c616dc19.png) |
 
 #### 演示视频
