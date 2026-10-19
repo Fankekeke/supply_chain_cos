@@ -1,20 +1,17 @@
-### 基于SpringBoot + Vue的供应链采购销售系统.
+![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-供应链采购销售系统、进销存一体化系统、ERP采购销售模块、供应商协同系统、智能采购销售管理
+![](https://img.shields.io/badge/Version-1.0.0-brightgreen.svg)
 
-###### 管理员：
-收货地址、预警配置、公告管理、商品管理、商品折扣、商品类型、配送物流、订单管理、库房出库、库房入库、库存预警、库房管理、库房记录、用户管理、供应商管理、原料库存、原件采购、出库记录、员工管理、原件出库、原件市场、询价记录、数据统计、订单年月统计。
+![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-###### 用户：
-账户注册登录、密码修改、个人信息、收货地址、订单物流、订单管理、商品选购、线上支付。
+# 基于 SpringBoot + Vue  的供应链采购销售系统
 
-###### 供应商：
-账户注册登录、密码修改、企业信息、供货原件、供货订单、客户询价。
+企业采购 · 销售商城 · 仓储物流 · 供应商协同 | 商品管理 · 订单流转 · 库存预警 · 采购检验 · 数据统计
 
-###### 员工：
-账户注册登录、密码修改、采购检验、个人信息。
+本项目是一套面向**制造/贸易企业**的供应链一体化管理系统，采用前后端分离架构，覆盖 **管理员（运营中枢）、用户（采购方/客户）、供应商（供货方）、员工（采购检验员）** 四类核心角色。系统围绕"供应商供货→企业采购入库→库存管理→商品销售→订单履约→物流配送→数据统计"的完整供应链闭环设计，同时集成库存预警、采购检验、供应商询价、商品折扣、多维度统计等模块，实现采购、销售、仓储、物流全链路数字化管理。
 
 #### 安装环境
+️**注意**：请确保您的开发环境已安装以下依赖。
 
 JAVA 环境 
 
@@ -22,24 +19,163 @@ Node.js环境 [https://nodejs.org/en/] 选择14.17
 
 Yarn 打开cmd， 输入npm install -g yarn !!!必须安装完毕nodejs
 
-Mysql 数据库 [https://blog.csdn.net/qq_40303031/article/details/88935262] 一定要把账户和密码记住
+Mysql 数据库 一定要把账户和密码记住
 
 redis
 
-Idea 编译器 [https://blog.csdn.net/weixin_44505194/article/details/104452880]
+Idea 编译器
 
-WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
+WebStorm OR VScode 编译器
 
 #### 采用技术及功能
 
 后端：SpringBoot、MybatisPlus、MySQL、Redis、
 前端：Vue、Apex、Antd、Axios
 
-平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件)
+平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件) + 百度地图 API
 
 平台后台：springboot(框架) + redis(缓存中间件) + shiro(权限中间件) + mybatisplus(orm) + restful风格接口 + mysql(数据库)
 
 开发环境：windows10 or windows7 ， vscode or webstorm ， idea + lambok
+
+---
+
+## 核心特性
+
+- **采购-销售双闭环**：上游对接供应商进行原件采购、询价议价、到货检验、入库上架；下游面向终端客户进行商品销售、订单处理、出库配送，形成完整的供应链业务流。
+- **智能仓储管理**：支持多库房管理、入库/出库/调拨全流程记录，结合原料库存与成品库存双维度管理，配置库存预警阈值，低于安全库存自动触发补货提醒。
+- **供应商协同门户**：供应商可维护企业信息、发布供货原件、查看供货订单、响应客户询价，与企业采购流程无缝对接，提升供应链协作效率。
+- **采购检验流程**：员工对采购到货的原件进行质量检验，记录检验结果（合格/不合格/部分合格），检验通过后触发入库，不合格品触发退货/换货流程。
+---
+
+## 适用场景
+
+- 制造型企业供应链管理系统
+- 贸易公司采购销售一体化平台
+- 电子元器件/原材料采购管理平台
+- B2B 采购商城与供应商协同系统
+- 企业仓储物流管理系统
+---
+
+## 功能模块概览
+
+## 管理员端
+
+管理员为平台运营中枢，负责全局管控：
+
+### 商品与营销
+
+- **商品管理**：管理销售商品，包括商品ID、商品名称、商品类型、规格参数、售价、成本价、库存数量、商品状态（上架/下架），支持商品增删改查与批量导入。
+- **商品折扣**：配置商品促销活动，包括折扣活动名称、适用商品、折扣力度（百分比/固定金额）、活动时间、活动状态，支持折扣规则管理。
+- **商品类型**：管理商品分类字典，包括类型ID、类型名称、父类型ID、排序号、图标，支持多级分类管理。
+
+### 采购与供应商
+
+- **供应商管理**：管理合作供应商，包括供应商ID、企业名称、联系人、联系电话、地址、供货类别、合作状态、信用评级，支持供应商审核与评级管理。
+- **原件市场**：浏览供应商发布的供货原件信息，包括原件名称、规格、供应商、报价、库存，支持按条件筛选与比价。
+- **原件采购**：创建采购订单，选择供应商与采购原件，填写采购数量、单价、期望到货日期，提交后推送至对应供应商。
+- **询价记录**：查看全平台询价历史，包括询价单号、询价商品、询价用户/员工、供应商报价、询价时间、处理状态，支持询价追溯。
+- **采购检验**（分配给员工）：管理员可查看员工提交的采购检验记录，包括检验单号、采购订单、检验结果、不合格原因、检验时间。
+
+### 仓储与库存
+
+- **库房管理**：管理企业库房信息，包括库房ID、库房名称、位置、负责人、容量、状态，支持多库房配置。
+- **库房入库**：处理入库业务，包括入库单号、入库类型（采购入库/退货入库/调拨入库）、关联采购订单、入库库房、入库商品/原件、数量、入库时间、操作人。
+- **库房出库**：处理出库业务，包括出库单号、出库类型（销售出库/调拨出库/损耗出库）、关联销售订单、出库库房、出库商品、数量、出库时间、操作人。
+- **库房记录**：查看全库房出入库流水，包括记录ID、库房名称、出入库类型、商品/原件、数量、结存、操作时间、操作人，支持按库房/时间段查询。
+- **原料库存**：查看原材料/原件库存，包括原件ID、原件名称、规格、当前库存、安全库存、所在库房、最后入库时间。
+- **库存预警**：配置库存预警规则，包括预警类型（低于安全库存/高于最大库存/临期预警）、预警商品/原件、预警阈值、通知方式，查看当前预警列表。
+
+### 订单与物流
+
+- **订单管理**：管理全平台销售订单，包括订单号、下单用户、订单金额、支付状态、订单状态（待付款/待发货/已发货/已完成/已取消）、下单时间，支持订单详情查看、发货处理、退款审核。
+- **配送物流**：管理物流配送信息，包括物流公司、物流单号、发货地址、收货地址、物流轨迹、发货时间、签收时间，支持物流信息录入与轨迹查询。
+- **收货地址**：管理默认发货地址/仓库地址，包括地址ID、联系人、联系电话、省市区、详细地址，支持地址增删改查。
+
+### 用户与员工
+
+- **用户管理**：管理注册用户（采购方/客户），包括用户ID、昵称、手机号、头像、注册时间、账户状态、累计订单数，支持用户查询、封禁/解封。
+- **员工管理**：管理企业内部员工，包括员工ID、姓名、工号、部门、岗位（采购员/检验员/仓管员）、手机号、入职时间、账户状态，支持员工增删改查与权限分配。
+
+### 运营与统计
+
+- **公告管理**：发布与管理平台公告，包括公告标题、内容、类型（系统通知/促销公告/维护通知/采购公告）、发布时间、置顶状态，支持公告编辑与删除。
+- **预警配置**：全局预警规则配置，包括库存预警阈值、订单超时预警、供应商交货延迟预警等，支持预警通知渠道设置（站内信/邮件/短信）。
+- **数据统计**：综合数据看板，展示核心运营指标（今日订单数/今日销售额/待处理采购/库存预警数/活跃供应商数/用户增长），支持销售趋势、采购成本趋势、库存周转率等多维度图表。
+- **订单年月统计**：按月份/年份统计订单数据，包括订单数量、订单金额、同比/环比增长率，支持图表展示与报表导出。
+
+## 用户端（采购方/客户）
+
+用户通过 Web / App / 小程序进行商品选购与订单管理：
+
+### 账户与个人
+
+- **账户注册登录**：支持手机号+验证码注册与登录，支持邮箱登录，支持找回密码。
+- **密码修改**：修改登录密码，支持原密码验证。
+- **个人信息**：查看与编辑个人基本信息，包括昵称、手机号、头像、邮箱、公司名称（企业采购），支持信息修改。
+- **收货地址**：管理个人收货地址，包括收货人、联系电话、省市区、详细地址、设为默认，支持地址增删改查。
+
+### 购物与订单
+
+- **商品选购**：浏览平台商品，支持按商品类型筛选、关键词搜索、排序（价格/销量/上架时间），查看商品详情（图片、规格、价格、库存、折扣），支持加入购物车、立即购买。
+- **线上支付**：支持微信支付、支付宝、企业对公转账等多种支付方式，支付后订单状态自动更新。
+- **订单管理**：查看个人订单列表，包括订单号、商品、订单金额、支付状态、订单状态、下单时间，支持订单详情查看、取消订单（待付款）、申请退款。
+- **订单物流**：查看已发货订单的物流信息，包括物流公司、物流单号、物流轨迹、预计送达时间，支持一键复制物流单号。
+
+## 供应商端
+
+供应商通过专属门户进行供货管理：
+
+### 账户与企业
+
+- **账户注册登录**：供应商注册与登录，需提交企业资质信息，经管理员审核通过后激活账户。
+- **密码修改**：修改登录密码。
+- **企业信息**：维护企业基本信息，包括企业名称、统一社会信用代码、联系人、联系电话、企业地址、企业简介、银行账户信息，支持信息修改。
+
+### 供货与询价
+
+- **供货原件**：发布与管理供货原件信息，包括原件名称、规格型号、图片、报价、库存数量、最小起订量、交货周期，支持原件增删改查与上下架。
+- **供货订单**：查看企业下发的采购订单，包括订单号、采购原件、数量、单价、期望到货日期、订单状态，支持确认接单、发货录入、发货完成。
+- **客户询价**：查看用户的询价请求，包括询价单号、询价商品、数量、期望价格、询价时间，支持在线报价与回复。
+
+## 员工端
+
+员工（主要为采购检验员）通过专属工作台进行采购检验：
+
+### 账户与个人
+
+- **账户注册登录**：员工由管理员创建账户后，使用工号与初始密码登录，首次登录强制修改密码。
+- **密码修改**：修改登录密码。
+- **个人信息**：查看个人基本信息，包括姓名、工号、部门、岗位、手机号，支持部分信息修改。
+
+### 采购检验
+
+- **采购检验**：查看待检验的采购到货列表，包括检验单号、采购订单、供应商、到货原件、到货数量、期望检验日期，支持录入检验结果（合格/不合格/部分合格）、填写检验备注、上传检验照片，检验通过后触发入库流程。
+
+---
+
+## 项目结构
+
+```text
+pharmacy-dispensing-system/
+├── backend/            # 后端 API 服务
+│   ├── src/
+│   │   ├── controllers/  # 控制器
+│   │   ├── models/       # 数据模型
+│   │   ├── routes/       # 路由
+│   │   └── services/     # 业务逻辑
+│   └── package.json
+├── frontend/           # 前端 Web 应用
+│   ├── src/
+│   │   ├── views/      # 页面视图
+│   │   ├── components/ # 公共组件
+│   │   └── store/      # 状态管理
+│   └── package.json
+├── docs/               # 项目文档与 API 接口说明
+├── LICENSE
+└── README.md
+```
+---
 
 
 #### 前台启动方式
@@ -49,40 +185,29 @@ WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
 #### 默认后台账户密码
 [管理员]
 admin
-1234qwer
-
-[供应商]
-SUP-fank
-1234qwer
-
-[员工]
-STF-fank
-1234qwer
+123456
 
 [用户]
 fank
-1234qwer
+123456
 
 #### 项目截图
-暂无
-
 |  |  |
 |---------------------|---------------------|
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/3af18fcd-3af2-4bc4-8931-1702e79c2ca4.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/b6764672-151f-422c-96f5-025280c23563.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/2fe232a3-e475-4813-b807-e4dbcc7f2ab4.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/b874a547-72b7-452c-bd98-47ebed59ac0d.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/2fc18ebb-003f-4a4b-91dd-0194cb4b3a68.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/ad98b898-5d0e-4f3a-8f4d-828156080f07.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/2a85ccee-2797-4c31-85f8-06a54a6cb03c.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/a980b834-3957-43a2-957e-76451582c079.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/0a24ad8d-daaf-45e2-b518-64107cd219f8.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/48953281-0e26-480a-889b-56ac8efd6b4d.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/fe9dcdd3-02e1-40c1-94b5-67fe5b93b8c0.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/00034149-c41a-45bb-9426-49039dd27854.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/fde68658-fa2c-437c-b067-c6a8df7b587f.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/4430cf5c-5f4b-4a75-b336-7361f3a2a334.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/ed68d0b1-ad55-4275-a055-9f02c75e49cb.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/721aaaee-9ca2-425a-ab5a-a8cb78a3a6b3.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/e1bf026d-621b-4010-939f-77d812585e73.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/0236c0ee-6908-498a-8ecf-989e70173a2f.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/d7912308-0abe-463d-9cbd-1e696402fe82.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/41b6f445-7300-4b6b-b578-7c78cc291659.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/d47ef55d-f9ac-4299-91a2-0f646e28b4a0.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/8a4cd814-b22a-43ca-bc0a-e9a1d5d16cf8.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/c3945fa6-6f5f-40df-8ff2-9a051d796181.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/6d426c74-5f42-40ad-a026-255caba4cc5c.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/c1f96c4e-4a62-4f95-8287-17628056bda3.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/5c1cfcd5-f920-464b-a22a-128bc3a539c8.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/c1cea100-1c8d-4073-8ac4-937f8d093e12.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/4de703c6-fffd-46a5-b7ec-00d6353d68ac.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/work/936e9baf53eb9a217af4f89c616dc19.png) |
+| ![](./assets/image%20(1).png) | ![](./assets/image%20(2).png) |
+| ![](./assets/image%20(3).png) | ![](./assets/image%20(4).png) |
+| ![](./assets/image%20(5).png) | ![](./assets/image%20(6).png) |
+| ![](./assets/image%20(7).png) | ![](./assets/image%20(8).png) |
+| ![](./assets/image%20(9).png) | ![](./assets/image%20(10).png) |
+| ![](./assets/image%20(11).png) | ![](./assets/image%20(12).png) |
+| ![](./assets/image%20(13).png) | ![](./assets/image%20(14).png) |
+| ![](./assets/image%20(15).png) | ![](./assets/image%20(16).png) |
+| ![](./assets/image%20(17).png) | ![](./assets/image%20(18).png) |
+| ![](./assets/image%20(19).png) | ![](./assets/image%20(20).png) |
+| ![](./assets/image%20(21).png) | ![](./assets/image%20(22).png) |
+| ![](./assets/image%20(23).png) | ![](./assets/image%20(24).png) |
+| ![](./assets/image%20(25).png) | ![](./assets/image%20(26).png) |
+| ![](./assets/image%20(27).png) | ![](./assets/image%20(28).png) |
 
 #### 演示视频
 
@@ -100,7 +225,10 @@ WeChat: `Storm_Berserker`
 
 > 项目部署调试不好包退！功能逻辑没讲明白包退！
 
+<div align=center><img align="center" src="./assets/product_word.png" alt="fankekeke" /></div>
+
 #### 其它资源
+[2026年-答辩顺利通过-客户评价🀄](https://berserker287.github.io/2026/06/29/2026%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
 [2025年-答辩顺利通过-客户评价🍜](https://berserker287.github.io/2025/06/18/2025%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
@@ -120,8 +248,12 @@ WeChat: `Storm_Berserker`
 
 #### 接JAVAWEB毕设，纯原创，价格公道，诚信第一
 
-<p><img align="center" src="https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/%E5%90%88%E4%BD%9C%E7%89%A9%E6%96%99%E6%A0%B7%E5%BC%8F%20(3).png" alt="fankekeke" /></p>
-
 `网站建设、小程序、H5、APP、各种系统 选题+开题报告+任务书+程序定制+安装调试+项目讲解+论文+答辩PPT`
 
 More info: [悲伤的橘子树](https://berserker287.github.io/)
+
+<div align="center"><img align="center" src="./assets/chat_qr_code.png" alt="fankekeke" width=250 /></div>
+
+<p><img align="center" src="./assets/wechat_group.png" alt="fankekeke" /></p>
+
+**感谢查看**
